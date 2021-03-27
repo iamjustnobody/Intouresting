@@ -1,0 +1,47 @@
+doctype html
+html
+    head
+        block head
+            meta(charset="UTF-8")
+            meta(name="viewport" content="width=device-width, initial-scale=1.0")
+            link(rel='stylesheet' href="../../css/style.css")
+            //-looking for href in static Assets folder
+            link(rel='shortcut icon' type='image/png' href="../../img/favicon.png")
+            link(href="https://fonts.googleapis.com/css?family=Lato:300,300i,700" rel="stylesheet")
+            //-title InTouresting | #{title==="All Tours"?"Exciting tours for adventurous people":title} //ok
+            //-title=`InTouresting | ${title==="All Tours"?"Exciting tours for adventurous people":title}` //ok
+            //-title=`"InTouresting |" ${title==="All Tours"?"Exciting tours for adventurous people":title}` //better not
+            //-title `InTouresting | #{title==="All Tours"?"Exciting tours for adventurous people":title}` //better nit
+            //-title InTouresting | `${title==="All Tours"?"Exciting tours for adventurous people":title}` //no
+            //-title=InTouresting | `${title==="All Tours"?"Exciting tours for adventurous people":title}` //no //title=0
+            //${} => #{tour} //-const x=9;
+            //h1=2*x h1= tour h2= user.toUpperCase() //tour & user are local data passed from app.get('',{render base,{tour,user}}) to base template/pug
+            //-script(src="https://js.stripe.com/v3/") //ok here or move to the bottom b4 boundler script
+
+    body
+        //HEADER
+        include _header
+
+        //CONTENT
+        //-section.overview //main.overview
+        //-    h1=tour
+        //-    h1 this is placeholder #{user}
+        block content
+            h1 this is placeholder
+
+        //FOOTER
+        include _footer
+
+        script(src="https://js.stripe.com/v3/")
+
+        //-script(src='/js/mapbox.js')
+        //-script(src='/js/login.js')
+        //-script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js')
+        //-script(type="module" src='/js/index.mjs')
+        //- script(type="module" src='/js/boundle.js')
+            //- now mjs back to js - rebuild bundle
+        script(src='/js/bundle.js')
+            //-add public url in package json: cannt find map on server error gone but still no maps show
+              //--public-url . or --public-url /js  // # sourceMappingURL=/js/bundle.js.map
+            //- change arrow to functin -> map shows //--public-url /js or --public-url . remove devTool warning or error (cannt find map on server error) in console.log
+            //- remove type module in script here -> reference error gone (parcelRequired)
