@@ -12,7 +12,13 @@ module.exports=class Emailer{
     }
     newTransport(){
         if(process.env.NODE_ENV==='production'){
-            return 1;
+            return nodemailer.createTransport({
+                service:'SendGrid',
+                auth:{
+                    user:process.env.SENDGRID_USERNAME,
+                    password:process.env.SENDGRID_PASSWORD,
+                }
+            });
         }
         const transporter=nodemailer.createTransport({
             //   service:'gamil',

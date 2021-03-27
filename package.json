@@ -6,11 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "popo": "nodemon app.js",
+    "dev": "nodemon app.js",
     "start:dev": "nodemon app.js",
-    "start:prod": "NODE_ENV=production nodemon app.js",
+    "start:prod": "SET NODE_ENV=production & nodemon app.js",
     "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url /js",
-    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url /js"
+    "build:js": "parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url /js"
   },
   "author": "xw",
   "license": "ISC",

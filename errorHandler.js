@@ -82,18 +82,21 @@ const sendErrProd2=(err,res)=>{
 
 }
 
-const handleCastErrDB=(err)=>{
+const handleCastErrDB=(err)=>{ console.log('CASTERR',err);
     const message=`Invalid ${err.path}:${err.value}.`;
     return new appErr(message,400);
 }
-const handleDupFieldsErrDB=(err)=>{
-    const value=err.errmsg.match(/(["'])(?:(?=(\\?))\2.)*?\1/)[0];
-    console.log(value);
-    const message=`Duplicate field value: ${value}. Please use another value.`;
+const handleDupFieldsErrDB=(err)=>{ console.log('DUPERR',err);
+ //   const value=err.errmsg.match(/(["'])(?:(?=(\\?))\2.)*?\1/)[0]; //errmsg undefined
+    const KVpairObj=err.keyValue;
+    console.log("dup obj= ",KVpairObj);
+    const keys=Object.keys(KVpairObj)
+    const message=`Duplicate field value: ${keys}. Please use another value.`;
     return new appErr(message,400);
 }
-const handleValidationErrDB=(err)=>{
-    const errMsgArray = Object.value(err.errors).map(el=>el.message);
+const handleValidationErrDB=(err)=>{ console.log('VADERR',err);
+    const errMsgArray = Object.values(err.errors).map(el=>el.message);
+    console.log('errMsgArray - ',errMsgArray)
     const message=`Invalid input data: ${errMsgArray.join('. ')}.`;
     return new appErr(message,400);
 }
@@ -104,12 +107,13 @@ const handleTokenExpErr = () => new appErr("Token expired. Please log in again",
 module.exports=(err,req,res,next)=>{
     err.statusCode=err.statusCode||500;
     err.status=err.status||'error';
+    console.log('we are in the mode of ',process.env.NODE_ENV, typeof process.env.NODE_ENV);
     console.log(err.stack);
-    if(process.env.NODE_ENV==='development'){
+    if(process.env.NODE_ENV.trim()==='development'){ console.log("we are in the development mode now");
         sendErrDev2(req,res,err); //or return sendErrDev2(req,res,err); //sendErrDev(res,err);//original api
        // if(req.originalUrl.startsWith('/api')){return sendErrDev(res,err);}  sendErrDev2(req,res,err);  //ok
         // if(req.originalUrl.startsWith('/api')){return sendErrDev(res,err);}  return sendErrDev2(req,res,err); //ok
-    }else if (process.env.NODE_ENV==='production'){
+    }else if (process.env.NODE_ENV.trim()==='production'){ console.log("we are in the production mode now");
       //  sendErrProd(err,res);//ok but also need to make more mongo errors operational as shown below
         let error={...err};
 
@@ -118,9 +122,10 @@ module.exports=(err,req,res,next)=>{
 
         if(err.name==='CastError'){error=handleCastErrDB(error);} //or error.name or handleCastErrDB(err); but needs error as left assignee and argument for sendErrProd below
         if(err.code===11000){error=handleDupFieldsErrDB(error);}
-        if(err.name==='ValidationError'){error=handleValidationErrDB(error);}
+        if(err.name==='ValidationError'){error=handleValidationErrDB(error);}//ok
+       // if(err.message.substr(13,23)==='Validation'){error=handleValidationErrDB(error);}//not 100% correct & substr index too dependable/ may vary
 
-        if(err.name==='JsonwebTokenError') error=handleJWTErr();
+        if(err.name==='JsonWebTokenError') error=handleJWTErr();
         if(err.name==='TokenExpiredError') error=handleTokenExpErr();
         //above making/marking more operational errors
         if(req.originalUrl.startsWith('/api')){sendErrProd(error,res);} else {sendErrProd2(error,res);}//sendErrProd(error,res); //original api
