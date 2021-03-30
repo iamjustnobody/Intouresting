@@ -179,7 +179,7 @@ tourSchema.pre('save',function (){
 tourSchema.post(/^find/,function(docs,next){ //for find & findOne etc allstrings start w find
     console.log(`QUery took ${Date.now()-this.start} milliseconds`) //this still points to query obj post query
 //    console.log(docs);
-//    console.log(docs.length);//returned docs after awaiting query
+ //   console.log(docs.length);//returned docs after awaiting query
 //    if(docs.length===1){console.log("em",docs[0].guides[0].name)} if(docs.length===undefined){console.log("ah",docs.reviews[0].tour.name,docs.reviews[0].tour.guides[0].name,docs.reviews[0].user.name)}
     next();
 });

@@ -55,10 +55,11 @@ const userSchema=new mongoose.Schema({
         select: false
     }
 });
-/*
+
 userSchema.post('save', function() {
     console.log('this gets started after saving to db');
 })
+
 userSchema.pre('save', function() {
     console.log('this gets started before saving to db');
 })
@@ -67,7 +68,7 @@ userSchema.post('validate', function() {
 });
 userSchema.pre('validate', function() {
     console.log('this gets printed first');
-});*/
+});
 /*
 userSchema.pre('save', function(error, doc, next) {
     console.log("testing pre error handling MW 1a");
@@ -85,28 +86,40 @@ userSchema.pre('save',async function (next){ //between getting it & saving it to
     if(!this.isModified('password')){console.log('continue1');return next();}
     this.password=await bcrypt.hash(this.password,12); //async return promise; removing await becomes sync; hash has both async & sync
     this.passwordConfirm=undefined; //required as input but not required to be persisted in db
-    console.log('modified1a');
-    /*  //   next(); //ok here //if return next here then jump to next pre-save-hook MW
+    /*    console.log('modified1a');
+      //   next(); //ok here //if return next here then jump to next pre-save-hook MW
         console.log('modified1b');
-      // next(new Error(`something's wrong - ${this.password}`));
+       next(new Error(`next new error1 something's wrong - ${this.password}`)); //finish this FC but not following MWs; if return, just like throw new err, not even finish this FC
         console.log('modified1b2');
       ////  next();console.log("modified1b3");
-      //  throw new Error(`something went wrong - ${this.password}`);//no o/p modified1c as b4 modified1c (like return next b4 modified1c); following MW o/ps when next b4 throw (but if no next before throw (no next or next after throw) then no following MW)
+        throw new Error(`throw new error something went wrong - ${this.password}`);//no o/p modified1c as b4 modified1c (like return next b4 modified1c); following MW o/ps when next b4 throw (but if no next before throw (no next or next after throw) then no following MW)
     //error will jump to post-save error handling MW not pre-saving error handling MW
         console.log('modified1c');
-       //// next(new Error(`something's wrong - ${this.password}`));// console.log
+       //// next(new Error(`next new error2 something's wrong - ${this.password}`));// console.log
         next(); //ok here too //opt after throw (w or w/o return)
-        console.log('modified1d');*/
+        console.log('modified1d'); */
 });
 /*
 userSchema.pre('save', function(error, doc, next) { //error in above pre-save MW wont come here -> will come to post-save error handling MW (3 arguments)
-    console.log("testing pre error handling MW 1a");
-  ///  next();
-  //  next(error);
-     next(new Error('There was an error')); //next(error);
-    //next();
+    console.log("testing pre error handling MW 1a",error,doc); //error is a fn, doc is savingOptions
+  /////  next();
+  ///  next(error);
+     next(new Error('There was an error'));//but this is not going to postsave error handling MW (3 args)
+      //next(error);//but this is not going to postsave error handling MW (3 args)
+    ///next();
     console.log("testing pre error handling MW 1b");
-}) */
+})
+ */
+/*
+userSchema.pre('save', function(error, next) { //error in above pre-save MW wont come here -> will come to post-save error handling MW (3 arguments)
+    console.log("testing pre error handling MW 1a",error);
+  /////  next();
+  ///  next(error);
+     next(new Error('There was an error'));//next is not a function - goes to post save error MW then generic err handling //error(new Error('There was an error'));
+      //next(error); //undefined
+    ///next();
+    console.log("testing pre error handling MW 1b");
+})*/
 userSchema.pre('save',async function (next){ //between getting it & saving it to the db
     console.log("aft validate 2");
     if(!this.isModified('password')||this.isNew){console.log('continue2');return next();}
@@ -115,7 +128,7 @@ userSchema.pre('save',async function (next){ //between getting it & saving it to
     next();
 });
 //for create & save func in handler.js
-/*
+
 userSchema.post('save',async function (doc,next){ //between getting it & saving it to the db
     console.log("posthook for save");
     next();
@@ -127,41 +140,45 @@ userSchema.post('save', function(doc) {
 userSchema.post('save', function() {
     console.log('saving to db already completed');
 });
+/*
 userSchema.post('save',function (doc,next){
     console.log('post-save test error 1');
-    next();
+   // next();
     console.log('post-save test error 2');
-   //   next(new Error(`something's wrong - ${this.password}`));
+      next(new Error(`something's wrong - ${this.password}`));//next - next(err) - throw err; or next(err) - throw err;
+   //  return  next(new Error(`something's wrong - ${this.password}`));//next - return next(err) - throw err;
     console.log('post-save test error 3');
    //// next();console.log("post-save test error 3a");
-    //  throw new Error(`something went wrong - ${this.password}`);
+    console.log("post-save test error 3b"); return next();
+      throw new Error(`something went wrong - ${this.password}`);
     console.log('post-save test error 4');
     //// next(new Error(`something's wrong - ${this.password}`)); console.log('post-save test error 4b');
     next();
     console.log('post-save test error 5');
-}); */
-/*
-userSchema.post('save', function(error, doc, next) {
-  *  if (error.name === 'MongoError' && error.code === 11000) {
-  *      console.log("mongo self detect dup err 1a");
-  *      next(new Error('There was a duplicate key error'));
-   *     console.log("mongo self detect dup err 1b");
-  *  } else {
-        console.log("mongo self detect dup err 0a");
-        next();
-        console.log("mongo self detect dup err 0b");
- *   }
+});
+*/
+
+userSchema.post('save', function(error, doc, next) { console.log("post-save error doc MW",error,doc,next) //this FC then goes to next MW which is the generic errorhandling MW
+    //  if (error.name === 'MongoError' && error.code === 11000) {
+    //      console.log("mongo self detect dup err 1a");
+    //      next(new Error('There was a duplicate key error'));
+    //     console.log("mongo self detect dup err 1b");
+    //  } else {
+    console.log("mongo self detect dup err 0a");
+    next();
+    console.log("mongo self detect dup err 0b");
+    //   }
 });//run before any other post save MW after all pre done (because user enters dup key and initiate so jump to this error func first otherwise post-save MW in order)
 //if no error then above post not executed; if error first executed; unlike pre-save with 3 arguments incl error where execute in order with other pre-save MW
-*/
-/*
-userSchema.post('save', function(doc, next) {
+
+
+userSchema.post('save', function(doc, next) { console.log("post-save doc",doc,next)
     setTimeout(function() {
-      next() ; //here ok
-        // return  next(); //using return will not o/p post1 but will continue to o/p post2
+        // next() ; //here ok
+        next(); //using return will not o/p post1 but will continue to o/p post2
         console.log('post1');
         // Kick off the second post hook
-       // next(); //or here ok too
+        // next(); //or here ok too
     }, 10);
 });
 // Will not execute until the first middleware calls `next()`
@@ -169,7 +186,7 @@ userSchema.post('save', function(doc, next) {
     console.log('post2');
     next();
 }); //return next() if sth after next() //errhandling MW &async
-*/
+
 
 
 //an instance method -> availabel on all docs of a certain collection

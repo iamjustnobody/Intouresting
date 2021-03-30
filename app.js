@@ -18,6 +18,7 @@ const app=express();
 console.log("haha",process.env.NODE_ENV); //after config
 
 const DB=process.env.DATABASE.replace('<PASSWORD>',process.env.DATABASE_PASSWORD);
+console.log(DB,typeof DB, typeof process.env.DATABASE_PASSWORD); //strings no matter if they have no/single/double quotes in config.env
 mongoose.connect(DB,{  //after config
     useNewUrlParser:true,
     useCreateIndex:true,

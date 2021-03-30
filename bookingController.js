@@ -57,7 +57,7 @@ exports.createBookingCheckout=catchAsync(async(req,res,next)=>{ //temperory ever
     res.redirect(req.originalUrl.split('?')[0]); //home page route url '/'  //viewRoutes
     // redirect creates a new request to the new url (success url without query) `${req.protocol}://${req.get('host')}/`
 })
-
+//suppose this above function could also be placed in viewsController.js then exported to viewRoutes.js
 
 exports.getMyBookings_backend=catchAsync(async (req,res,next)=>{// or using virtual pop?
     //find all the bookingsfor the cur users -> gives tour iDs
