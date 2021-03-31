@@ -27,6 +27,7 @@ const viewsHandler=require('./viewsController');  const authController=require('
 router.get('/me',authController.protect,viewsHandler.getAccount);
 
 router.get('/my-tours',authController.protect,viewsHandler.getMyTours);
+//same as getMyTours_backend in bookingController & get '/myTours' in bookingRoutes
 
 
 const bookingHandler=require('./bookingController');

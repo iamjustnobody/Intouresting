@@ -6,6 +6,7 @@ const authController=require('./authHandler');
 const router=express.Router({mergeParams:true}); //previous router
 //post or get /tour/:tourId/reviews/ with logged in user id
 //get /tour/:tourId/reviews/:reviewID with logged in user id
+// '/tour/:tourId/reviews' from tourRoutes
 
 router.use(authController.protect);
 

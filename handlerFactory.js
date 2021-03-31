@@ -54,7 +54,9 @@ exports.getMany=Model => catchAsync(async(req,res,next)=>{
     //apiFeatures ont only on Tour but also on Review
   //  const featuresObj=new ApiFeatures(Model.find(),req.query).filter().sort().limitFields().paginate(); //now below two lines of code allows for nested GET reviews on tour
     let filterObj={}; console.log(req.params);
-    if(req.params.tourId){filterObj={tour:req.params.tourId}}; //tour & user & (generic) review use /:id in routepath params whilst nested tour/:tourId/review use /:tourId
+    if(req.params.tourId){filterObj={tour:req.params.tourId}};
+    //for getAllReviews in reviewsController /tour/:tourId/reviews/ ==/reviews/ or /tour/:tourId/reviews/:id ==/reviews/:id (tourRoutes+reviewRoutes == reviewRoutes)
+    //tour & user & (generic) review use /:id in routepath params (for tourid userid reviewid respectively) whilst nested tour/:tourId/review use /:tourId
   //  const featuresObj=new ApiFeatures(Model.find(),req.query).filter(filterObj).sort().limitFields().paginate(); //its like no filteration
     const featuresObj=new ApiFeatures(Model.find(filterObj),req.query).filter().sort().limitFields().paginate();
 

@@ -93,9 +93,10 @@ const reviewController=require('./reviewHandler');
 router
     .route('/:tourId/reviews')
     .post(authController.protect,authController.restrictTo('user'),reviewController.createReview)
-*/
+*/ //or below move to reviewRoutes& reviewController as /tour/:tourId/reviews/ ==/reviews/ or /tour/:tourId/reviews/:id ==/reviews/:id
 
 const reviewRouter=require('./reviewRoutes');
 router.use('/:tourId/reviews',reviewRouter); //need reviewRouter accessed to tourId params so need mergeParams in reviewRoutes.js
+//just like app.use MW
 
 module.exports=router;

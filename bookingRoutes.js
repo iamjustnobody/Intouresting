@@ -8,6 +8,7 @@ router.get('/checkout-session/:tourId',authController.protect,bookingHandler.get
 
 router.get('/myBookings',authController.protect,bookingHandler.getMyBookings_backend)
 router.get('/myTours',authController.protect,bookingHandler.getMyTours_backend)
+//same as getMyTours in viewsController & get '/my-tours' in viewsRoutes
 
 
 router.use(authController.protect,authController.restrictTo('admin','lead-guide'))
