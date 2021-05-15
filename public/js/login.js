@@ -23,13 +23,15 @@ export async function login (email,password){ console.log(email,password); //for
         });
         console.log(res); //res.data is our data response - json
         if(res.data.status==='success'){
-            alert('Log in successfully!');
+            //alert('Logged in successfully!');//ok
+            showAlert('success', 'Logged in successfully!');
             window.setTimeout(()=>{
                 location.assign('/');//location.reload(true); but deprecated (so plus window.) but also dont wanna stay in current login page so redirect to home page
             },1500);
         }
     }catch(err){
-        //  console.log(err.response.data);//err.response.data is our data response - json
+        //  console.log(err.response.data);//err.response.data- data is our data response - json
+        //err.response.data in axios documentation
         // alert(err.response.data.message);
        console.log(err);
        showAlert('error',err.response.data.message);
@@ -43,7 +45,7 @@ export async function login (email,password){ console.log(email,password); //for
     const password=document.getElementById('password').value;
     login(email,password);
 })*/ //move to index.mjs now index.js
-
+//move to index that gets user interface & delegate actions
 
 
 export async function logout(){

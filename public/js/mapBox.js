@@ -37,7 +37,7 @@ locations.forEach(loc=>{
 
     //add pop up
     new mapboxgl.Popup({offset:30}).setLngLat(loc.coordinates).setHTML(`<p>Day ${loc.day}: ${loc.description}</p>`).addTo(map);
-
+//offset for not overlapping
 
 
     //extend bounds to include current location
@@ -56,7 +56,7 @@ map.fitBounds(bounds,{//moving & zooming
 export function displayMap(locations){
         mapboxgl.accessToken = 'pk.eyJ1Ijoibm9ub2Fpbm9ubyIsImEiOiJja21pN2RpOXgwZWdmMndtdGFzdmV5N3ZqIn0.k8SjMZQIP7zP31eZGCNaYw';
         var map = new mapboxgl.Map({
-            container: 'map',
+            container: 'map',  //element map in pug html
             style: 'mapbox://styles/nonoainono/ckmi8lbo32mhs17ny35538dh2',//'mapbox://styles/nonoainono/ckmi86zpl3ncx17mkshqsmgvf',  //'mapbox://styles/mapbox/streets-v11'
             //   center:[-118.113491,34.111745], //lng,lat
             //   zoom:4,

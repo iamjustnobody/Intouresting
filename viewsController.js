@@ -57,7 +57,7 @@ exports.updateUserData=catchAsync(async (req,res)=>{ console.log('id- ',req.user
         title: 'Your account',
         user:updatedUser
     })
-}) //'/submit-user-data' render account page with new user data
+}) //'/submit-user-data' render account page with new user data #{user} in html/pug
 
 
 exports.getMyTours=catchAsync(async (req,res,next)=>{// or using virtual pop?

@@ -45,3 +45,9 @@ html
               //--public-url . or --public-url /js  // # sourceMappingURL=/js/bundle.js.map
             //- change arrow to functin -> map shows //--public-url /js or --public-url . remove devTool warning or error (cannt find map on server error) in console.log
             //- remove type module in script here -> reference error gone (parcelRequired)
+
+
+            //-install parcelboundler & add scripts in package json (specifying watched file - index.js & output folder); will watch index.js & generate boundler file (in packageJson-pre-specified output folder)
+            //-create index.js then replace scripts mapbox/login/axios js with boundler.js
+            //-then run watch:js to produce boundler.js in packageJson-pre-specified output folder
+                //-also install npm axios as axios cdn commented out

@@ -86,7 +86,7 @@ exports.updateMe=catchAsync(async (req,res,next)=>{
     const updatedUser=await User.findByIdAndUpdate(req.user.id,filteredBody,{ //or req.user._id both ok//req.user after authController.protect (token)
         new: true,
         runValidators: true
-    }); //betttttter than req.body including although other fields also unchanged
+    }); //filteredBody betttttter than req.body including although other fields also unchanged
 
   //  const updatedUser=await User.findById(req.user.id); updatedUser.name="kelloggs"; await updatedUser.save();
     res.status(200).json({

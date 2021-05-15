@@ -280,6 +280,7 @@ exports.isUserLoggedIn2=async (req,res,next)=>{
     }
     next();
 }
+//viewsRoutes close2front end; except removing apperror pretty much the same as auth.protect MW (more secure, backend+ closed2frontend personal page)
 
 exports.logOut=catchAsync(async (req,res,next)=>{ //similar to createSendCookie
     res.cookie('jwt','loggedout',{ //random data and no last long //'jwt' 'loggedout' -> isUserLoggedIn(2) in overviewRoutes.js

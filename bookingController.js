@@ -6,7 +6,7 @@ const stripe=require('stripe')
 
 const Booking=require('./bookingModel')
 
-exports.getCheckoutSession=catchAsync(async (req,res,next)=>{
+exports.getCheckoutSession=catchAsync(async (req,res,next)=>{ //createCheckoutSession & return session
     //get current tour
     const tour=await Tour.findById(req.params.tourId); //bookingRoutes router path '/checkout-session/:tourId'
     console.log('secret type ',typeof process.env.STRIPE_SECRET_KEY);//string //STRIPE_SECRET_KEY=xx or 'xx' both ok string
