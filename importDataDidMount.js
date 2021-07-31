@@ -15,10 +15,10 @@ mongoose.connect(DB,{  //after config
     useUnifiedTopology: true
 }).then(con=>{
         //  console.log(con.connections);
-        console.log("DB connection succeed");
+        //console.log("DB connection succeed");
     }
 ).catch(err=>{
-    console.log("db connection failed",err.message);
+    //console.log("db connection failed",err.message);
 });
 
 //const tours=fs.readFileSync(`${__dirname}/data/tour-simple.json`,'utf-8'); // b4 S11
@@ -33,7 +33,7 @@ const importData=async(req,res)=>{
         await Tour.create(JSON.parse(tours));
         await User.create(JSON.parse(users),{validateBeforeSave:false});
         await Review.create(JSON.parse(reviews));
-        console.log("inital data loaded successfully");
+        //console.log("inital data loaded successfully");
         process.exit();
     }catch(e){
         res.status(400).json({
@@ -49,7 +49,7 @@ const deleteData=async(req,res)=>{
         await Tour.deleteMany();
         await User.deleteMany();
         await Review.deleteMany();
-        console.log("all data deleted successfully");
+        //console.log("all data deleted successfully");
         process.exit();
     }catch(e){
         res.status(400).json({
@@ -59,12 +59,7 @@ const deleteData=async(req,res)=>{
     }
 }
 
-//deleteData();importData();
-//try to do in the terminal
-//this js not exported to app.js
-//command line in the terminal: node xxx.js
-//here it should be: node importDataDidMount.js
-console.log(process.argv);
+//console.log(process.argv);
 
 if(process.argv[2]==='--import'){
 importData();
