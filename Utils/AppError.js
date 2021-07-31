@@ -10,8 +10,3 @@ class AppError extends Error{
 }
 
 module.exports=AppError;
-
-//exported to tourhandler for mongodb id/tour existence error
-//exported to app.js to process other non-existed routes errors
-//will be processed in final errorhandler.js; jump to last error in app.use(error4)
-//isOperational is for the errors we created -> new appError () for id/tour existence & non-exsited route
