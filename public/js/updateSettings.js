@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {showAlert} from "./alerts";
 
-export async function updateData(name,email) { console.log('how come',name,email);
+export async function updateData(name,email) {
     try{
         const res=await axios({
             method:'PATCH',
@@ -18,7 +18,7 @@ export async function updateData(name,email) { console.log('how come',name,email
             showAlert('success','Data updated successfully')
         }
     }catch(err){
-        showAlert("error",err.response.data.message) //message propert is whats defined in our server
+        showAlert("error",err.response.data.message)
     }
 }
 
@@ -35,6 +35,6 @@ export async function updateSettings(data,type) {
             showAlert('success',`${type.toUpperCase()} updated successfully`)
         }
     }catch(err){
-        showAlert("error",err.response.data.message) //message propert is whats defined in our server
+        showAlert("error",err.response.data.message) 
     }
-} //async func returns promise
+} 
