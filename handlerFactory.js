@@ -13,12 +13,10 @@ exports.deleteOne=Model=> catchAsync((async(req,res,next)=>{
 
 exports.updateOne=Model => catchAsync(async(req,res,next)=>{
     const doc= await Model.findByIdAndUpdate(req.params.id,req.body,{
-        new:true, //await query to send a new doc back
+        new:true, 
         runValidators:true
     });
-    if(!doc){return next(new appErr("No tour found with that ID in MongoDB",404) );} //this is mongodb error
-    //this will jump to and be caught by apperror //otherwise will return 200 ok
-    //must return //otherwise use else if or place in the end
+    if(!doc){return next(new appErr("No tour found with that ID in MongoDB",404) );} 
     res.status(200).json({
         status:'success',
         data:{data:doc}
@@ -35,15 +33,10 @@ exports.addOne = Model => catchAsync(async (req,res,next)=>{
 })
 
 exports.getOne= (Model,popOptions) => catchAsync(async(req,res,next)=>{
-  //  const doc=await Model.findById(req.params.id).populate('reviews'); //virtual populate ref back to child Review //name of field we wanna populate
-    // populate also create a query to create connection btween two model
     let query=Model.findById(req.params.id);
     if(popOptions){query=query.populate(popOptions);}
-    const doc=await query; //similar to apiFeatures this is where pre/post hook MW would execute first before this line of code (even if this line of code return none found in db
-
-    if(!doc){return next(new appErr("No document found with that ID in MongoDB",404) );} //this is mongodb error
-    //this will jump to and be caught by apperror //otherwise will return 200 ok //must return or elseif
-    //console.log(doc);
+    const doc=await query; 
+    if(!doc){return next(new appErr("No document found with that ID in MongoDB",404) );} 
     res.status(200).json({
         status:'success',
         data:{data:doc}
@@ -51,13 +44,8 @@ exports.getOne= (Model,popOptions) => catchAsync(async(req,res,next)=>{
 });
 
 exports.getMany=Model => catchAsync(async(req,res,next)=>{
-    //apiFeatures ont only on Tour but also on Review
-  //  const featuresObj=new ApiFeatures(Model.find(),req.query).filter().sort().limitFields().paginate(); //now below two lines of code allows for nested GET reviews on tour
-    let filterObj={}; console.log(req.params);
+     let filterObj={}; 
     if(req.params.tourId){filterObj={tour:req.params.tourId}};
-    //for getAllReviews in reviewsController /tour/:tourId/reviews/ ==/reviews/ or /tour/:tourId/reviews/:id ==/reviews/:id (tourRoutes+reviewRoutes == reviewRoutes)
-    //tour & user & (generic) review use /:id in routepath params (for tourid userid reviewid respectively) whilst nested tour/:tourId/review use /:tourId
-  //  const featuresObj=new ApiFeatures(Model.find(),req.query).filter(filterObj).sort().limitFields().paginate(); //its like no filteration
     const featuresObj=new ApiFeatures(Model.find(filterObj),req.query).filter().sort().limitFields().paginate();
 
     const docs=await featuresObj.query; //const docs=await featuresObj.query.explain();
