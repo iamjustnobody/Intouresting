@@ -46,21 +46,10 @@ if(logOutBtn) logOutBtn.addEventListener('click',logout)
 if(userDataForm){
     userDataForm.addEventListener('submit',e=>{
         e.preventDefault();
-        /*
-        const email=emailEl.value;
-        const name=nameEl.value;
-       // updateData(name,email);//ok
-        updateSettings({name,email},'data');
-        //{name:name,email:email}
-         */ //before 202; but now using form to upload/update images (change photo label/input in account.pug) now need to make api call
         const form=new FormData();
-        //form.append('name',document.getElementById('name').value); //ok
-        //form.append('email',document.getElementById('email').value);//ok
         form.append('name',nameEl.value);
         form.append('email',emailEl.value);
         form.append('photo',document.getElementById('photo').files[0]);
-        //name in User doc (so key 'photo' form-data in postman & field name multer is expecting //name & id (both photo) in account.pug
-        console.log('form -: ',form);
         updateSettings(form,'data');
     })
 }
@@ -74,11 +63,8 @@ if(userPwdForm){
         const passwordConfirm=pwdConfirmEl.value;
         console.log(passwordCurrent,password,passwordConfirm);
         savePwdBtn.textContent='Updating...'; //or innerHTML
-        //updateSettings({currentPassword:passwordCurrent,password,passwordConfirm},'password'); //ok but now need to empty inputs on page
-        // n await this promise (updateSettins) so set async e
-        //{passwordCurrent:passwordCurrent,password:password,passwordConfirm:passwordConfirm} //compared to postman inputs
         await updateSettings({currentPassword:passwordCurrent,password,passwordConfirm},'password');
-        pwdCurEl.value='';//textContent?
+        pwdCurEl.value='';
         passwordEl.value='';
         pwdConfirmEl.value='';
         savePwdBtn.innerHTML='Save password';//innerHTML or textContent //not .value
@@ -90,10 +76,7 @@ if(userPwdForm){
 if(bookBtn)
     bookBtn.addEventListener('click',e=>{
 
-        e.target.textContent='Processing...'; //or innerHTML
-        //const tourId=e.target.dataset.tourId; //ok
-        // e is #book-tour from button.btn.btn--green.span-all-rows#book-tour//data attribute inside e or button -> data-tour-id=`${tour.id}` from tourdetail.pug;
+        e.target.textContent='Processing...'; 
         const {tourId}=e.target.dataset;
-console.log('tourId=',tourId,typeof tourId); //cast to string no matter its data-tour-id=`${tour.id}` or data-tour-id=`${tour._id}` at the end of tourdetails.pug
         bookTour(tourId)
     })
