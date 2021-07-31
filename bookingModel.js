@@ -27,19 +27,16 @@ const bookingSchema=new mongoose.Schema({
     }
 });
 
-bookingSchema.pre(/^find/,function(next){ //admin & guide allowed actions
-    console.log('booking to populate user & tour start')
-    this.populate('user').populate('tour');//fields user & tour as defined in booking schema
-//    this.populate('user').populate({path:'tour',select:'name'}); //path - booking schema field//select 'name' field of 'tour' (path/ bookingmodelschema's field) doc; select Tour schema field
-    console.log('booking to populate user & tour continue')
+bookingSchema.pre(/^find/,function(next){ 
+    this.populate('user').populate('tour');
     next();
 })
 bookingSchema.post('save',function(doc,next){
-    console.log('booking post save - booking doc: ',doc)
+    //console.log('booking post save - booking doc: ',doc)
     next();
 })
 bookingSchema.pre('save',function(next){
-    console.log('booking pre save')
+    //console.log('booking pre save')
     next();
 })
 const Booking=mongoose.model('Booking',bookingSchema);
