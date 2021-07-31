@@ -1,10 +1,4 @@
-/*
-exports.getUsers=(req,res)=>{res.end();}
-exports.addAnUser=(req,res)=>{res.end();}
-exports.getAnUser=(req,res)=>{res.end();}
-exports.updateAnUser=(req,res)=>{res.end();}
-exports.deleteAnUser=(req,res)=>{res.end();}
- */
+
 
 const User=require('./userModel');
 const catchAsync=require('./Utils/catchAsync');
@@ -57,7 +51,7 @@ exports.resizeUserPhoto=catchAsync(async (req,res,next)=>{
     // /this returns an obj that could be chained
     //const fileName=`user-${req.user.id}-${Date.now()}.${ext}`;
     //but need req.file.filename for filteredBody in updateMe below as req.file.filename not defined as multistorageD->multistorageM
-    req.file.filename=`user-${req.user.id}-${Date.now()}.jpeg`; //or ${req.user._id} are ok
+    req.file.filename=`user-${req.user.id}-${Date.now()}.jpeg`; 
     console.log('req.file.filename: ',req.file.filename);
     await sharp(req.file.buffer).resize(500,500).toFormat('jpeg').jpeg({quality:90})//90% compressed a bit
         //.toFile(`public/img/${fileName}`);//need the entire path
@@ -67,13 +61,13 @@ exports.resizeUserPhoto=catchAsync(async (req,res,next)=>{
 
 
 
-const filteredObj=(obj, ...allowedFields)=>{ //...allowedFields is an array containing all fields
+const filteredObj=(obj, ...allowedFields)=>{ 
     const newObj={};
-    Object.keys(obj).forEach(el=>{ //element is field of object
-        if(allowedFields.includes(el)){newObj[el]=obj[el];}//allowedfields & obj => arrays
+    Object.keys(obj).forEach(el=>{ 
+        if(allowedFields.includes(el)){newObj[el]=obj[el];}
     })
     return newObj;
-}//loop through key/field names of the obj
+}
 exports.updateMe=catchAsync(async (req,res,next)=>{
     console.log("req.file from multer upload MW: ",req.file);
     console.log("req.body in updateMe: ", req.body);
@@ -83,12 +77,11 @@ exports.updateMe=catchAsync(async (req,res,next)=>{
     }
     const filteredBody=filteredObj(req.body,'name','email');
     if(req.file) filteredBody.photo=req.file.filename; //!//need filename not file path //.photo is the name of field that holds the photo
-    const updatedUser=await User.findByIdAndUpdate(req.user.id,filteredBody,{ //or req.user._id both ok//req.user after authController.protect (token)
+    const updatedUser=await User.findByIdAndUpdate(req.user.id,filteredBody,{ 
         new: true,
         runValidators: true
-    }); //filteredBody betttttter than req.body including although other fields also unchanged
+    }); 
 
-  //  const updatedUser=await User.findById(req.user.id); updatedUser.name="kelloggs"; await updatedUser.save();
     res.status(200).json({
         status:'success',
         data:{
@@ -98,13 +91,12 @@ exports.updateMe=catchAsync(async (req,res,next)=>{
 })
 
 exports.getMe=(req,res,next)=>{
-  //  req.params.id=req.user._id; //ok //after auth protect MW
-    req.params.id=req.user.id;//ok
+    req.params.id=req.user._id;
     next();
 }
 
 exports.deleteMe=catchAsync(async (req,res)=>{
-    await User.findByIdAndUpdate(req.user.id,{active:false}); //{active:req.body.active} patch/update
+    await User.findByIdAndUpdate(req.user.id,{active:false}); 
     res.status(204).json({
         status:'success',
         data:null
@@ -113,8 +105,6 @@ exports.deleteMe=catchAsync(async (req,res)=>{
 
 
 
-
-//exports.addAnUser=factory.addOne(User); //sign-up
 exports.addAnUser=(req,res)=>{
     res.status(500).json({
         status:'error',
